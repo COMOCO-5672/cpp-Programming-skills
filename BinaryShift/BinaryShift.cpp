@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// NOTE:这个计算有问题，计算结果不正确
 void MUL(int src, int dst, int *pro)
 {
     bool sign = ((src ^ dst) < 0); // 判断符号
@@ -17,6 +18,26 @@ void MUL(int src, int dst, int *pro)
         }
     }
     sign ? (*pro = -res) : (*pro = res);
+}
+
+void MUL2(int src, int dst, int *pro)
+{
+    int result = 0;
+
+    // 从低位到高位逐位处理乘数 b
+    while (dst != 0) {
+        // 如果当前位为 1，则将对应的部分和加到结果中
+        if (dst & 1) {
+            result += src;
+        }
+
+        // 乘数右移一位，相当于当前位的权值乘 2
+        src <<= 1;
+        // 结果的部分和左移一位，相当于当前位的权值乘 2
+        dst >>= 1;
+    }
+
+    *pro = result;
 }
 
 void DIV(int src, int dst, int *quo, int *rem)
@@ -42,16 +63,16 @@ void DIV(int src, int dst, int *quo, int *rem)
 int main()
 {
     int src, dst;
-    int* pro = (int*)malloc(sizeof(int));
-    int* quo = (int*)malloc(sizeof(int));
-    int* rem = (int*)malloc(sizeof(int));
+    int *pro = (int *) malloc(sizeof(int));
+    int *quo = (int *) malloc(sizeof(int));
+    int *rem = (int *) malloc(sizeof(int));
 
     printf("请输入 src: ");
     scanf("%d", &src);
     printf("请输入 dst: ");
     scanf("%d", &dst);
 
-    MUL(src, dst, pro);
+    MUL2(src, dst, pro);
     printf("积为 %d\n", *pro);
     DIV(src, dst, quo, rem);
     printf("商为 %d，余数为 %d\n", *quo, *rem);
