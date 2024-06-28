@@ -84,6 +84,7 @@ int main() {
     WSACleanup();
 
     uint32_t ntp_timestamp = ntohl(packet.transmit_timestamp_sec) - NTP_TIMESTAMP_OFFSET;
+    std::cout << "NTP time span: " << ntp_timestamp << std::endl;
     std::time_t local_time = ntp_timestamp;
     std::cout << "NTP timestamp: " << std::ctime(&local_time) << std::endl;
 
